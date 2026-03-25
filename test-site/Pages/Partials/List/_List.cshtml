@@ -1,0 +1,42 @@
+@using test_site.Models
+@model test_site.Pages.Partials.List.ListModel
+<h2>List</h2>
+
+<div class="list @(Model.Sticky ? "sticky" : "")">
+    <div class="controls">
+        <form id="filter-form" hx-get="/Partials/List/_ListHtmx" hx-target="#table-container" hx-swap="innerHTML"
+              hx-trigger="change delay:300ms, submit">
+
+            <fieldset>
+                <legend>Age</legend>
+                <label>
+                    From:
+                    <input type="number" name="AgeFrom" min="0" max="100" step="1" value="@Model.AgeFrom" />
+                </label>
+                <label>
+                    To:
+                    <input type="number" name="AgeTo" min="0" max="100" step="1" value="@Model.AgeTo" />
+                </label>
+            </fieldset>
+
+            <fieldset>
+                <legend>Categories</legend>
+                @foreach (Category category in Model.Categories)
+                {
+                    <label>
+                        <input type="checkbox" name="FilterCategoryIds" value="@category.Id"
+                        @(Model.FilterCategoryIds.Contains(category.Id) ? "checked" : "") />
+                        @category.Name
+                    </label>
+                }
+            </fieldset>
+
+            <input type="hidden" name="PageSize" value="@Model.PageSize" />
+            <button type="submit">Filter</button>
+            <a asp-page="./Index">Clear</a>
+        </form>
+    </div>
+
+    <div id="table-container" class="data" hx-get="/Partials/List/_ListHtmx" hx-trigger="load" hx-swap="innerHTML"
+         hx-include="#filter-form"></div>
+</div>

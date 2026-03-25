@@ -1,0 +1,28 @@
+@page
+@using test_site.Models
+@model test_site.Pages.Partials.List.ListHtmxModel
+@{ Layout = null; }
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Category</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Person item in Model.People)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Age</td>
+                <td>@item.Category.Name</td>
+            </tr>
+        }
+    </tbody>
+</table>
+@if (!Model.People.Any())
+{
+    <p class="noDataMessage">No people found.</p>
+}

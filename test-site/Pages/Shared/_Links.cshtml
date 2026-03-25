@@ -1,0 +1,18 @@
+@using test_site.Models
+
+@{
+    List<PageLink> pages = new List<PageLink>
+    {
+        new PageLink("static-1", "/Static-1"),
+        new PageLink("static-2", "/Static-2"),
+        new PageLink("live", "/Live"),
+        new PageLink("list", "/List")
+    };
+}
+
+@foreach (PageLink link in pages)
+{
+    <li>
+        <a href="@link.Path">@link.Name</a>
+    </li>
+}
