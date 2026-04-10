@@ -3,10 +3,11 @@
 
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - test_site</title>
-    <script type="importmap"></script>
-    <script src="https://unpkg.com/htmx.org@1.9.10/dist/htmx.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Test site</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="htmx-config" content='{"includeIndicatorStyles":false}' />
+    <script src="~/js/htmx.min.js" asp-append-version="true"></script>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/header.css" asp-append-version="true" />
 </head>
@@ -20,11 +21,9 @@
         <partial name="_Header.cshtml" />
     }
 
-    <div>
-        <main role="main" class="page-width @(hideHeader ? "no-top-margin" : "")">
-            @RenderBody()
-        </main>
-    </div>
+    <main role="main" class="page-width @(hideHeader ? "no-top-margin" : "")">
+        @RenderBody()
+    </main>
 
     <partial name="_Footer.cshtml" />
 

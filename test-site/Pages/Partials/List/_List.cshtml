@@ -2,41 +2,84 @@
 @model test_site.Pages.Partials.List.ListModel
 <h2>List</h2>
 
-<div class="list @(Model.Sticky ? "sticky" : "")">
+<div id="list" class="list @(Model.sticky ? "sticky" : "")">
     <div class="controls">
-        <form id="filter-form" hx-get="/Partials/List/_ListHtmx" hx-target="#table-container" hx-swap="innerHTML"
-              hx-trigger="change delay:300ms, submit">
+        <form id="filter-form" hx-get="/Partials/List/_ListHtmx" hx-target="#list-data" hx-swap="innerHTML"
+              hx-trigger="change delay:300ms, input delay:300ms, submit">
+
+            <label>
+                Sort by:
+                <select name="sort">
+                    <option value="name" selected="@(Model.sort == "name" ? "selected" : null)">Name</option>
+                    <option value="age" selected="@(Model.sort == "age" ? "selected" : null)">Age</option>
+                    <option value="category" selected="@(Model.sort == "category" ? "selected" : null)">Category</option>
+                </select>
+            </label>
 
             <fieldset>
                 <legend>Age</legend>
                 <label>
                     From:
-                    <input type="number" name="AgeFrom" min="0" max="100" step="1" value="@Model.AgeFrom" />
+                    <input type="number" name="age_from" min="0" max="100" step="1" value="@Model.age_from" required />
                 </label>
                 <label>
                     To:
-                    <input type="number" name="AgeTo" min="0" max="100" step="1" value="@Model.AgeTo" />
+                    <input type="number" name="age_to" min="0" max="100" step="1" value="@Model.age_to" required />
                 </label>
             </fieldset>
 
             <fieldset>
                 <legend>Categories</legend>
-                @foreach (Category category in Model.Categories)
+                @foreach (Category cat in Model.SortedCategories)
                 {
                     <label>
-                        <input type="checkbox" name="FilterCategoryIds" value="@category.Id"
-                        @(Model.FilterCategoryIds.Contains(category.Id) ? "checked" : "") />
-                        @category.Name
+                        <input type="checkbox" name="category" value="@cat.Id" @(Model.category.Contains(cat.Id) ? "checked" : "") />
+                        @cat.Name
                     </label>
                 }
             </fieldset>
 
-            <input type="hidden" name="PageSize" value="@Model.PageSize" />
-            <button type="submit">Filter</button>
+            <fieldset>
+                <legend>Paging</legend>
+                <label>
+                    Size:
+                    <input type="number" name="size" min="1" max="1000" step="1" value="@Model.size" required />
+                </label>
+                <label>
+                    Page:
+                    <input type="number" name="page_num" min="1" max="2000000" step="1" value="@Model.page_num"
+                           required />
+                </label>
+            </fieldset>
+            <button id="sort" type="submit">Search</button>
             <a asp-page="./Index">Clear</a>
         </form>
     </div>
 
-    <div id="table-container" class="data" hx-get="/Partials/List/_ListHtmx" hx-trigger="load" hx-swap="innerHTML"
-         hx-include="#filter-form"></div>
+    <div id="list-data" class="data" hx-get="/Partials/List/_ListHtmx" hx-swap="innerHTML"
+         hx-include="#filter-form">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Age</th>
+                    <th>Category</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (Person item in Model.People)
+                {
+                    <tr>
+                        <td>@item.Name</td>
+                        <td>@item.Age</td>
+                        <td>@item.Category.Name</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        @if (!Model.People.Any())
+        {
+            <p class="no-data-message">No people found.</p>
+        }
+    </div>
 </div>

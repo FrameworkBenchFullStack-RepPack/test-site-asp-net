@@ -1,9 +1,12 @@
 @page
 @using test_site.Models
 @model test_site.Pages.Partials.List.ListHtmxModel
-@{ Layout = null; }
+@{
+    Layout = null;
+}
 
-<table>
+
+<table class="table">
     <thead>
         <tr>
             <th>Name</th>
@@ -24,5 +27,5 @@
 </table>
 @if (!Model.People.Any())
 {
-    <p class="noDataMessage">No people found.</p>
+    <p class="no-data-message">No people found.</p>
 }

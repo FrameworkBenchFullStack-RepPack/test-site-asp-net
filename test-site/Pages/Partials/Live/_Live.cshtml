@@ -8,25 +8,5 @@
     </tbody>
 </table>
 
-@* Seneste version af SignalR på cdn *@
-<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/9.0.6/signalr.min.js"></script>
-
-<script>
-    const connection = new signalR.HubConnectionBuilder()
-    .withUrl("/LiveHub")
-    .build();
-
-    connection.on("ReceiveNumbers", function (data) {
-    document.getElementById("sig-1").innerText = data.number1;
-    document.getElementById("sig-2").innerText = data.number2;
-    document.getElementById("sig-3").innerText = data.number3;
-    });
-
-    function startSignalR() {
-    if (connection.state === signalR.HubConnectionState.Disconnected) {
-    connection.start().catch(err => console.error(err.toString()));
-    }
-    }
-
-    startSignalR();
-</script>
+<script src="~/js/signalr.min.js" asp-append-version="true"></script>
+<script src="~/js/live.js" asp-append-version="true"></script>

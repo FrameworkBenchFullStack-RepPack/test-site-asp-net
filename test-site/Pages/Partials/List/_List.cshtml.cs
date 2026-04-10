@@ -1,44 +1,43 @@
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using test_site.Data;
 using test_site.Models;
+using System.Linq;
 
 namespace test_site.Pages.Partials.List;
 
-public class ListModel : PageModel
+public class ListModel(ApplicationDbContext context) : ListFilterBase
 {
-    private readonly ApplicationDbContext _context;
 
-    public ListModel(ApplicationDbContext context)
-    {
-        _context = context;
-    }
-
-    public bool Sticky { get; set; }
+    public bool sticky { get; set; }
 
     public List<Category> Categories { get; set; } = [];
-
-    [BindProperty(SupportsGet = true)]
-    public List<int> FilterCategoryIds { get; set; } = [];
-
-    [BindProperty(SupportsGet = true)]
-    public int AgeFrom { get; set; } = 0;
-
-    [BindProperty(SupportsGet = true)]
-    public int AgeTo { get; set; } = 100;
-
-    [BindProperty(SupportsGet = true)]
-    public int Offset { get; set; } = 0;
-
-    [BindProperty(SupportsGet = true)]
-    public int PageSize { get; set; } = 50;
+    public List<Category> SortedCategories { get; set; } = [];
+    public IList<Person> People { get; set; } = [];
 
     public async Task OnGetAsync()
     {
-        Categories = await _context.Categories.ToListAsync();
+        Categories = await context.Categories.ToListAsync();
+        SortedCategories = Categories.OrderBy(c => c.Name).ToList();
 
-        if (FilterCategoryIds.Count == 0)
-            FilterCategoryIds = Categories.Select(c => c.Id).ToList();
+        if (category.Count == 0)
+            category = [.. Categories.Select(c => c.Id)];
+
+        IQueryable<Person> query = context.People.Include(p => p.Category);
+        List<int> validCategoryIds = [.. Categories.Select(c => c.Id)];
+        List<int> filteredCategory = [.. category.Where(validCategoryIds.Contains)];
+        if (filteredCategory.Count > 0)
+        {
+            query = query.Where(person => filteredCategory.Contains(person.CategoryId));
+        }
+        query = query.Where(person => person.Age >= age_from && person.Age <= age_to);
+        query = sort switch
+        {
+            "age" => query.OrderBy(p => p.Age).ThenBy(p => p.Name),
+            "category" => query.OrderBy(p => p.Category.Name).ThenBy(p => p.Name),
+            _ => query.OrderBy(p => p.Name),
+        };
+        int skip = (Math.Max(1, page_num) - 1) * size;
+        query = query.Skip(skip).Take(size);
+        People = await query.ToListAsync();
     }
 }
