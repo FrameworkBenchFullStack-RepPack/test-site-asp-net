@@ -1,15 +1,11 @@
-# test-site — ASP.NET Razor Pages + HTMX
-
----
+# Test Site — ASP.NET Razor Pages + HTMX
 
 ## Prerequisites
 
-- [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0)
-- [PostgreSQL](https://www.postgresql.org/download/)
+- .NET 10 SDK: https://dotnet.microsoft.com/download/dotnet/10.0
+- A running copy of the database: https://github.com/FrameworkBenchFullStack-RepPack/database-seed
 
----
-
-## 1. Install .NET 10
+## Install .NET 10
 
 ### macOS (Homebrew)
 
@@ -25,90 +21,59 @@ Verify the installation:
 dotnet --version
 ```
 
-### Linux (Ubuntu/Debian)
+### Linux (Ubuntu)
 
 ```bash
-wget https://packages.microsoft.com/config/ubuntu/24.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
-sudo dpkg -i packages-microsoft-prod.deb
-sudo apt-get update && sudo apt-get install -y dotnet-sdk-10.0
+sudo apt update && sudo apt install -y dotnet-sdk-10.0
 ```
 
----
-
-## 2. Set Up PostgreSQL
-
-The app expects a PostgreSQL database with the following defaults (defined in `appsettings.json`):
-
-| Setting  | Value     |
-| -------- | --------- |
-| Host     | localhost |
-| Database | benchmark |
-| Username | benchmark |
-| Password | benchmark |
-
-To use different credentials, update the connection string in `test-site/appsettings.json`:
-
-```json
-"ConnectionStrings": {
-  "DefaultConnection": "Host=localhost;Database=benchmark;Username=benchmark;Password=benchmark"
-}
-```
-
----
-
-## 3. Install Dependencies & Apply Migrations
+## Install Dependencies
 
 ```bash
 cd test-site
 dotnet restore
-dotnet ef database update
 ```
 
-> `dotnet ef` requires the EF Core CLI. If it's not installed:
->
-> ```bash
-> dotnet tool install --global dotnet-ef
-> ```
+## Build and Run
 
----
+Do this when you need to run the server for benchmarking purposes.
 
-## 4. Run the App
+Run server:
 
-### Default (uses launch profile — HTTP on port 5223)
+```bash
+ConnectionStrings__DefaultConnection="Host=localhost;Port=5432;Database=benchmark;Username=benchmark;Password=benchmark" ASPNETCORE_URLS="http://localhost:5223" ASPNETCORE_ENVIRONMENT="Production" dotnet run
+```
+
+- `ConnectionStrings__DefaultConnection` is the connection string to the PostgreSQL database.
+- `ASPNETCORE_URLS` defines the url and port on which the website is served.
+
+When the server is ready, it logs a large multiline block of text which includes:
+
+```bash
+Now listening on: http://localhost:5223
+Application started.
+```
+
+## Run Test-Server for Development:
+
+Do this if you need a quick preview of the website, or are actively working on it.
+
+Update the connection string in `test-site/appsettings.json` to point to the postgreSQL server:
+
+```json
+"ConnectionStrings": {
+  "DefaultConnection": "Host=localhost;Port=5432;Database=benchmark;Username=benchmark;Password=benchmark"
+}
+```
+
+Run the default launch profile (HTTP on port 5223):
 
 ```bash
 dotnet run
 ```
 
-### Run on a specific port
+Or run on a specific port:
 
 ```bash
 dotnet run --urls "http://localhost:8080"
 ```
-
-### Run on multiple URLs (HTTP + HTTPS)
-
-```bash
-dotnet run --urls "https://localhost:7239;http://localhost:5223"
-```
-
-### Run a specific launch profile
-
-```bash
-dotnet run --launch-profile http    # http://localhost:5223
-dotnet run --launch-profile https   # https://localhost:7239
-```
-
-### Set the port via environment variable
-
-```bash
-ASPNETCORE_URLS="http://localhost:8080" dotnet run
-```
-
-To overwrite the default db port with env vars
-
-```bash
-ConnectionStrings__DefaultConnection="Host=localhost;Port={Port here};Database=benchmark;Username=benchmark;Password=benchmark" dotnet run
-```
-
-The app will be available at the configured URL. The browser launches automatically in Development mode.
