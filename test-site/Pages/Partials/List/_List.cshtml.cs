@@ -1,10 +1,11 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using test_site.Data;
 using test_site.Models;
-using System.Linq;
 
 namespace test_site.Pages.Partials.List;
 
+[ResponseCache(Duration = 3600, Location = ResponseCacheLocation.Any)]
 public class ListModel(ApplicationDbContext context) : ListFilterBase
 {
 

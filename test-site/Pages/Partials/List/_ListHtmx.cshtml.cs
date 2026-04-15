@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using test_site.Data;
 using test_site.Models;
 
 namespace test_site.Pages.Partials.List;
 
+[ResponseCache(Duration = 3600, Location = ResponseCacheLocation.Any)]
 public class ListHtmxModel(ApplicationDbContext context) : ListFilterBase
 {
     public IList<Person> People { get; set; } = default!;

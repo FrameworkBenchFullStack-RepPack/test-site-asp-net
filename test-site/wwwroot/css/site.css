@@ -71,7 +71,7 @@ a {
     padding: 1em;
     accent-color: var(--color-tertiary);
 
-    & label:has(> input[name="FilterCategoryIds"]) {
+    & label:has(> input[name="category"]) {
       display: block;
     }
   }

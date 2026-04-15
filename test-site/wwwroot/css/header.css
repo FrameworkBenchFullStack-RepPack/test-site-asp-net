@@ -30,6 +30,9 @@
 .home-header {
   padding-top: var(--header-height);
   padding-bottom: 5em;
+  margin-top: calc(-1 * var(--page-padding));
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
 
   & > h1 {
     width: 100%;
