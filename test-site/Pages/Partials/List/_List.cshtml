@@ -1,7 +1,5 @@
 @using test_site.Models
 @model test_site.Pages.Partials.List.ListModel
-<h2>List</h2>
-
 <div id="list" class="list @(Model.sticky ? "sticky" : "")">
     <div class="controls">
         <form id="filter-form" hx-get="/Partials/List/_ListHtmx" hx-target="#list-data" hx-swap="innerHTML"
@@ -12,7 +10,8 @@
                 <select name="sort">
                     <option value="name" selected="@(Model.sort == "name" ? "selected" : null)">Name</option>
                     <option value="age" selected="@(Model.sort == "age" ? "selected" : null)">Age</option>
-                    <option value="category" selected="@(Model.sort == "category" ? "selected" : null)">Category</option>
+                    <option value="category" selected="@(Model.sort == "category" ? "selected" : null)">Category
+                    </option>
                 </select>
             </label>
 
@@ -52,12 +51,10 @@
                 </label>
             </fieldset>
             <button id="sort" type="submit">Search</button>
-            <a asp-page="./Index">Clear</a>
         </form>
     </div>
 
-    <div id="list-data" class="data" hx-get="/Partials/List/_ListHtmx" hx-swap="innerHTML"
-         hx-include="#filter-form">
+    <div id="list-data" class="data" hx-get="/Partials/List/_ListHtmx" hx-swap="innerHTML" hx-include="#filter-form">
         <table class="table">
             <thead>
                 <tr>

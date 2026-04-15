@@ -74,6 +74,10 @@ a {
     & label:has(> input[name="category"]) {
       display: block;
     }
+    
+    & button {
+        margin-top: 0.5em;
+    }
   }
 
   & .data {
