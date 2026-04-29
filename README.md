@@ -41,11 +41,11 @@ Do this when you need to run the server for benchmarking purposes.
 Run server:
 
 ```bash
-ConnectionStrings__DefaultConnection="Host=localhost;Port=5432;Database=benchmark;Username=benchmark;Password=benchmark" ASPNETCORE_URLS="http://localhost:5223" ASPNETCORE_ENVIRONMENT="Production" dotnet run
+ConnectionStrings__DefaultConnection="Host=localhost;Port=5432;Database=benchmark;Username=benchmark;Password=benchmark" PORT="5223" ASPNETCORE_ENVIRONMENT="Production" dotnet run
 ```
 
 - `ConnectionStrings__DefaultConnection` is the connection string to the PostgreSQL database.
-- `ASPNETCORE_URLS` defines the url and port on which the website is served.
+- `PORT` defines the port on which the website is served.
 
 When the server is ready, it logs a large multiline block of text which includes:
 
@@ -75,5 +75,5 @@ dotnet run
 Or run on a specific port:
 
 ```bash
-dotnet run --urls "http://localhost:8080"
+PORT="{port}" dotnet run
 ```
