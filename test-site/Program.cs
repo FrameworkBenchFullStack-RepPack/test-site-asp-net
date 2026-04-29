@@ -9,6 +9,9 @@ builder.Services.AddSignalR();
 
 builder.Services.AddHostedService<LiveDataTicker>();
 
+string port = Environment.GetEnvironmentVariable("PORT") ?? "5223";
+builder.WebHost.UseUrls($"http://localhost:{port}");
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
