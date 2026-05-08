@@ -13,11 +13,9 @@ public class ListHtmxModel(ApplicationDbContext context) : ListFilterBase
     public async Task OnGetAsync()
     {
         IQueryable<Person> query = context.People.Include(p => p.Category);
-        List<int> validCategoryIds = await context.Categories.Select(c => c.Id).ToListAsync();
-        List<int> filteredCategory = category.Where(validCategoryIds.Contains).ToList();
-        if (filteredCategory.Count > 0)
+        if (category.Count > 0)
         {
-            query = query.Where(person => filteredCategory.Contains(person.CategoryId));
+            query = query.Where(person => category.Contains(person.CategoryId));
         }
 
         query = query.Where(person => person.Age >= age_from && person.Age <= age_to);
