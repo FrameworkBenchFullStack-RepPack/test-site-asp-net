@@ -6,8 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Test site</title>
     <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
-    <meta name="htmx-config" content='{"includeIndicatorStyles":false}' />
-    <script src="~/js/htmx.min.js" asp-append-version="true"></script>
+     @{
+        var importdata = new Microsoft.AspNetCore.Components.ImportMapDefinition(
+            new Dictionary<string, string>
+            {
+                { "htmx.org", @Url.Content("~/js/vendor/htmx.esm.min@2.0.8.js") },
+                { "htmx-ext-head-support", @Url.Content("~/js/vendor/htmx-ext-head-support.esm.min@2.0.5.js") },
+                { "microsoft/signalR", @Url.Content("~/js/vendor/signalr.min@10.0.0.js") }
+            },
+            null, 
+            null
+        );
+    }
+    <script type="importmap" asp-importmap="@importdata"></script>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/header.css" asp-append-version="true" />
 </head>
@@ -15,7 +26,7 @@
     bool hideHeader = ViewData["HideHeader"] is true;
 }
 
-<body>
+<body hx-boost="true" hx-ext="head-support">
     @if (!hideHeader)
     {
         <partial name="_Header.cshtml" />
@@ -27,7 +38,7 @@
 
     <partial name="_Footer.cshtml" />
 
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script type="module" src="~/js/site.js" asp-append-version="true"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

@@ -1,12 +1,16 @@
+import "microsoft/signalR";
+
 const connection = new signalR.HubConnectionBuilder()
     .withUrl("/LiveHub")
     .configureLogging("none")
     .build();
 
 connection.on("ReceiveNumbers", function (data) {
-    document.getElementById("sig-1").innerText = data.number1;
-    document.getElementById("sig-2").innerText = data.number2;
-    document.getElementById("sig-3").innerText = data.number3;
+    const element = document.querySelector("#live-data");
+    if(!element) return;
+    element.querySelector("#sig-1").innerText = data.number1;
+    element.querySelector("#sig-2").innerText = data.number2;
+    element.querySelector("#sig-3").innerText = data.number3;
 });
 
 function startSignalR() {

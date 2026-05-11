@@ -63,7 +63,7 @@ app.Use(async (context, next) =>
         if (contentType.Contains("html") || contentType.Contains("svg") || contentType.Contains("xml"))
         {
             context.Response.Headers.ContentSecurityPolicy =
-                "default-src 'self'; base-uri 'self'; frame-ancestors 'none'; object-src 'none'; form-action 'self';";
+                "default-src 'self' 'unsafe-inline'; base-uri 'self'; frame-ancestors 'none'; object-src 'none'; form-action 'self';";
 
             context.Response.Headers.CacheControl = "public, max-age=86400";
         }
