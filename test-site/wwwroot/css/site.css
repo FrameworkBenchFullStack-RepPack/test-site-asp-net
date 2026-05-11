@@ -74,6 +74,10 @@ a {
     & label:has(> input[name="category"]) {
       display: block;
     }
+
+    & input {
+      max-width: 6em;
+    }
     
     & button {
         margin-top: 0.5em;
