@@ -1,3 +1,5 @@
+using System.IO.Compression;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using test_site.Data;
 using test_site.Utilities;
@@ -18,6 +20,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddResponseCompression(options =>
 {
     options.EnableForHttps = true;
+    options.Providers.Add<GzipCompressionProvider>();
 });
 
 WebApplication app = builder.Build();
@@ -29,8 +32,6 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Error");
     app.UseHttpsRedirection();
 }
-
-app.UseRouting();
 
 app.UseStaticFiles(new StaticFileOptions
 {
@@ -48,6 +49,8 @@ app.UseStaticFiles(new StaticFileOptions
         }
     }
 });
+
+app.UseRouting();
 
 app.Use(async (context, next) =>
 {
@@ -77,7 +80,6 @@ app.Use(async (context, next) =>
 
     await next();
 });
-
 
 app.MapStaticAssets();
 app.MapRazorPages()
