@@ -2,8 +2,8 @@
 @model test_site.Pages.Partials.List.ListModel
 <div id="list" class="list @(Model.sticky ? "sticky" : "")">
     <div class="controls">
-        <form id="filter-form" hx-get="/Partials/List/_ListHtmx" hx-target="#list-data" hx-swap="innerHTML"
-              hx-trigger="change delay:300ms, input delay:300ms, submit">
+        <form id="filter-form" hx-get="/Partials/List/_ListHtmx" hx-target="#list-data"
+            hx-trigger="submit, change delay:300ms, input changed delay:1s">
 
             <label>
                 Sort by:
